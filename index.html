@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gauri ka Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f4fa;--card:#fff;--ink:#1b1e4b;--mute:#5b5f8a;--line:#dcdef0;--acc:#f2a900;--rose:#c2416b;--ok:#2e8b6a;--accink:#1b1e4b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12142b;--card:#1c1f42;--ink:#eceefc;--mute:#9da2d1;--line:#2e3262;--acc:#f5b82e;--rose:#ef7da2;--ok:#4fc79c}}
+:root[data-theme="dark"]{--bg:#12142b;--card:#1c1f42;--ink:#eceefc;--mute:#9da2d1;--line:#2e3262;--acc:#f5b82e;--rose:#ef7da2;--ok:#4fc79c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'DM Sans',system-ui,sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+h1,h2,.big{font-family:'Fraunces',Georgia,serif}
+h1{font-size:2rem;margin:8px 0 2px;font-weight:800}
+h2{font-size:1.35rem;margin:36px 0 12px;font-weight:600}
+.sub{color:var(--mute);margin:0 0 20px}
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tick{border-radius:16px;padding:18px 16px;background:var(--ink);color:var(--bg);position:relative;overflow:hidden}
+.tick.w{background:var(--rose);color:#fff}
+.tick .big{font-size:3.4rem;line-height:1;font-weight:800}
+.tick small{display:block;opacity:.85;margin-top:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+.ev{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.ev b{display:block}
+.chip{display:inline-block;font-size:.78rem;padding:1px 9px;border-radius:99px;border:1px solid var(--line);color:var(--mute);margin-right:6px}
+.chip.soon{background:var(--acc);color:#1b1e4b;border-color:var(--acc);font-weight:700}
+.chip.past{opacity:.55}
+.days{font-family:'Fraunces',serif;font-weight:800;font-size:1.5rem;min-width:64px;text-align:right}
+a{color:var(--rose)}
+a.btn,button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--ink);background:transparent;color:var(--ink);padding:6px 12px}
+button.pri{background:var(--ink);color:var(--bg)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button.x{border:none;color:var(--mute);padding:4px 8px}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+input,select{font:inherit;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);min-width:0}
+input.grow{flex:1 1 160px}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);width:0;transition:width .3s}
+.week{display:flex;gap:6px;align-items:flex-end;height:90px;margin-top:12px}
+.week div{flex:1;text-align:center;font-size:.72rem;color:var(--mute)}
+.week span{display:block;background:var(--acc);border-radius:6px 6px 0 0;min-height:3px}
+.todo{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.todo input{min-width:auto;width:20px;height:20px}
+.todo.d span{text-decoration:line-through;color:var(--mute)}
+.todo span{flex:1}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{text-decoration:none;border:1px solid var(--line);background:var(--card);padding:6px 12px;border-radius:99px}
+.note{color:var(--mute);font-size:.88rem}
+@media(max-width:480px){.tick .big{font-size:2.6rem}.hero{gap:8px}}
+details.sj{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+details.sj summary{cursor:pointer;padding:12px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between;list-style:none}
+details.sj summary::-webkit-details-marker{display:none}
+details.sj summary b{flex:1}
+.pc{font-family:'Fraunces',serif;font-weight:800}
+.sjb{padding:0 14px 14px}
+.pyq{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.pyq label{font-size:.85rem;color:var(--mute)}
+.pyq input{width:76px}
+.lv0{color:var(--rose)}.lv1{color:var(--acc)}.lv2{color:var(--ok)}
+.wk{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.wk.now{background:var(--card);border-left:4px solid var(--acc);padding-left:10px;border-radius:6px}
+.wk .n{min-width:72px;color:var(--mute);font-size:.85rem}
+.wk b{display:block}
+#chat{position:fixed;left:0;right:0;bottom:0;max-width:760px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:16px 16px 0 0;padding:12px 14px calc(12px + env(safe-area-inset-bottom,0px));max-height:78vh;display:flex;flex-direction:column;box-shadow:0 -6px 24px rgba(0,0,0,.22);z-index:10}
+#chat[hidden]{display:none}
+.ch{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.cl{overflow-y:auto;flex:1;min-height:120px;margin:8px 0}
+.m{padding:8px 12px;border-radius:12px;margin:6px 0;white-space:pre-wrap;max-width:94%}
+.m.u{background:var(--ink);color:var(--bg);margin-left:auto}
+.m.b{background:var(--bg);border:1px solid var(--line)}
+.cq{display:flex;gap:6px;flex-wrap:wrap}
+.cq button{font-size:.82rem;padding:3px 10px;border-radius:99px}
+button.mini{font-size:.8rem;padding:2px 10px;border-radius:99px;margin-top:6px}
+.todo button.mini{margin-top:0}
+</style>
+</head>
+<body>
+<main>
+<h1>Gauri ka Planner</h1>
+<p class="sub" id="hi"></p>
+
+<div class="hero">
+  <div class="tick w"><span class="big" id="wd">–</span><small>din bache hain shaadi mein<br>11 March 2027</small></div>
+  <div class="tick"><span class="big" id="nd">–</span><small id="nl">agla exam</small></div>
+</div>
+
+<h2>Important dates</h2>
+<div id="evs"></div>
+<div class="card">
+  <b>Nayi date jodo</b>
+  <div class="row">
+    <input class="grow" id="et" placeholder="Jaise: IBPS PO apply last date">
+    <input type="date" id="ed">
+    <select id="ek"><option value="exam">Exam</option><option value="apply">Application last date</option><option value="wedding">Shaadi / celebration</option></select>
+    <button class="pri" id="ea">Add date</button>
+  </div>
+  <p class="note">Government exams ki date hamesha official notification se confirm karke jodo. "Add to calendar" dabane par Google Calendar mein reminder set ho jata hai.</p>
+</div>
+
+<h2>Padhai ka tracker</h2>
+<div class="card">
+  <b id="wk">Is hafte: 0 / 20 ghante</b>
+  <div class="bar" style="margin-top:8px"><i id="wb"></i></div>
+  <div class="week" id="wg"></div>
+  <div class="row">
+    <input type="number" id="hr" min="0" max="16" step="0.5" placeholder="Aaj kitne ghante?" style="width:150px">
+    <button class="pri" id="hl">Aaj ka log save karo</button>
+    <span class="note" id="st" style="align-self:center"></span>
+  </div>
+  <p class="note">Target: weekdays par 2 ghante, weekends par 5 ghante, yani hafte ke 20 ghante. Apne hisaab se badal sakti ho.</p>
+</div>
+
+<h2>11 hafte ka plan (EPFO AFC tak)</h2>
+<div class="card" id="pl"></div>
+<div class="card"><b>Negative marking ka simple niyam</b>
+<p class="note" style="margin:6px 0 0">Galat par 1/3 number katta hai. Agar 4 options hain aur andaza bilkul andhera hai, to expected fayda 0 hai. Agar ek option bhi pakka kaat sako, to attempt karna fayde ka hai. Do option kat jayein to zaroor attempt karo. Paper mein pehle wo sawal karo jo aate hain, baad mein andaze wale.</p></div>
+
+<h2>Syllabus aur PYQ readiness</h2>
+<div class="card">
+  <b id="ov">Overall readiness: 0%</b> <span class="chip" id="ol"></span>
+  <div class="bar" style="margin:8px 0"><i id="ob"></i></div>
+  <p class="note">UPSC ke official scheme ke 9 subjects. Exam 2 ghante ka objective paper hai (Hindi aur English), galat jawab par 1/3 negative marking. Har subject mein topics tick karo, phir PYQ solve karke solved, sahi aur galat bharo. Readiness = aadha syllabus coverage + aadha PYQ score (negative marking ke baad). Topics ka breakdown sirf ek suggestion hai.</p>
+</div>
+<div id="sj"></div>
+
+<h2>Mock / PYQ paper log</h2>
+<div class="card">
+  <div id="tl"></div>
+  <div class="row">
+    <input class="grow" id="tn" placeholder="Paper ka naam (jaise EPFO 2023 PYQ)">
+    <input type="number" id="tq" min="1" placeholder="Total sawal" style="width:110px">
+    <input type="number" id="tr" min="0" placeholder="Sahi" style="width:80px">
+    <input type="number" id="tw" min="0" placeholder="Galat" style="width:80px">
+    <button class="pri" id="ta">Add paper</button>
+  </div>
+  <p class="note">Score % = (sahi - galat/3) / total sawal. Lagatar 3 papers mein 60% se upar aaye to achhi tayari ka sanket hai, lekin cutoff har saal badalta hai.</p>
+</div>
+
+<h2>Official sites</h2>
+<div class="links">
+  <a href="https://upsc.gov.in" target="_blank" rel="noopener">UPSC</a>
+  <a href="https://upsconline.gov.in" target="_blank" rel="noopener">UPSC Online (apply)</a>
+  <a href="https://www.epfindia.gov.in" target="_blank" rel="noopener">EPFO</a>
+  <a href="https://www.ibps.in" target="_blank" rel="noopener">IBPS</a>
+  <a href="https://sbi.co.in/web/careers" target="_blank" rel="noopener">SBI Careers</a>
+  <a href="https://opportunities.rbi.org.in" target="_blank" rel="noopener">RBI</a>
+  <a href="https://ssc.gov.in" target="_blank" rel="noopener">SSC</a>
+</div>
+<p class="note" style="margin-top:28px">Hafta-wise plan mera diya hua suggestion hai (5 Oct se 20 Dec). Apne hisaab se badal lena. Tumhara data sirf is browser mein save hota hai, to phone aur laptop par alag dikhega.</p>
+<p class="note" id="sy"></p>
+</main>
+<div id="chat" hidden role="dialog" aria-label="Topic tutor">
+  <div class="ch"><b id="ct"></b><button class="x" id="cx">Band karo</button></div>
+  <div class="cl" id="cl" aria-live="polite"></div>
+  <div class="cq" id="cq"></div>
+  <div class="row"><input class="grow" id="ci" placeholder="Apna sawal likho"><button class="pri" id="cs">Bhejo</button></div>
+</div>
+<script>
+var $=function(i){return document.getElementById(i)};
+var KEY='gauri-planner-v1';
+var S={ev:[{t:'Shaadi',d:'2027-03-11',k:'wedding'},{t:'UPSC EPFO AFC exam',d:'2026-12-20',k:'exam'}],log:{},sub:{},tests:[]};
+try{var raw=localStorage.getItem(KEY);if(raw){S=JSON.parse(raw)}}catch(e){}
+var ref=null,tm=null,busy=false,dirty=false;
+function setSy(t){var e=$('sy');if(e)e.textContent=t}
+function push(){
+  if(!ref)return;if(busy){dirty=true;return}
+  busy=true;dirty=false;
+  ref.set({json:JSON.stringify(S),at:S.at}).then(function(){setSy('Sync on: ye data tumhare claude.ai account se jura hai.')}).catch(function(){setSy('Sync abhi nahi ho paya. Data is browser mein save hai.')}).then(function(){busy=false;if(dirty)push()});
+}
+function save(){
+  S.at=Date.now();
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}
+  if(ref){clearTimeout(tm);tm=setTimeout(push,800)}
+}
+async function initSync(){
+  try{
+    var u=await claude.use('user'),db=await claude.use('db');
+    if(!u||!db){setSy('Sync off: claude.ai mein sign in karke khologi to sab devices par data ek jaisa dikhega.');return}
+    var id=await u.id();if(!id){setSy('Sync off: claude.ai mein sign in karke kholo.');return}
+    var r=db.doc('data/users/'+id+'/planner'),snap=await r.get();
+    if(snap.exists){
+      var d=snap.data(),rem=JSON.parse(d.json);
+      if((d.at||0)>(S.at||0)){S=rem;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}ref=r;renderAll();setSy('Sync on: tumhara saved data load ho gaya.');return}
+    }
+    ref=r;if(!S.at)S.at=Date.now();push();
+  }catch(e){setSy('Sync off: data sirf is browser mein save hai.')}
+}
+function pd(s){var p=s.split('-');return new Date(+p[0],p[1]-1,+p[2])}
+function iso(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function today(){var n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate())}
+function left(s){return Math.round((pd(s)-today())/864e5)}
+function calUrl(e){var a=pd(e.d),b=new Date(a.getFullYear(),a.getMonth(),a.getDate()+1);
+var f=function(d){return iso(d).replace(/-/g,'')};
+return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text='+encodeURIComponent(e.t)+'&dates='+f(a)+'/'+f(b)}
+var kinds={exam:'Exam',apply:'Apply karne ki last date',wedding:'Shaadi'};
+function renderEv(){
+  var box=$('evs');box.textContent='';
+  var list=S.ev.map(function(e,i){return{e:e,i:i,n:left(e.d)}}).sort(function(a,b){return a.e.d<b.e.d?-1:1});
+  list.forEach(function(o){
+    var c=document.createElement('div');c.className='card ev';
+    var l=document.createElement('div');
+    var b=document.createElement('b');b.textContent=o.e.t;l.appendChild(b);
+    var ch=document.createElement('span');ch.className='chip'+(o.n<0?' past':'');ch.textContent=kinds[o.e.k]||'Date';l.appendChild(ch);
+    var dt=document.createElement('span');dt.className='note';dt.textContent=pd(o.e.d).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});l.appendChild(dt);
+    if(o.n>=0&&o.n<=30){var s=document.createElement('span');s.className='chip soon';s.style.marginLeft='6px';s.textContent='Jaldi aa raha hai';l.appendChild(s)}
+    c.appendChild(l);
+    var r=document.createElement('div');r.style.display='flex';r.style.alignItems='center';r.style.gap='8px';
+    var d=document.createElement('span');d.className='days';d.textContent=o.n<0?'beet gaya':(o.n===0?'Aaj!':o.n+' din');if(o.n<0)d.style.fontSize='1rem';r.appendChild(d);
+    var a=document.createElement('a');a.className='btn';a.href=calUrl(o.e);a.target='_blank';a.rel='noopener';a.textContent='Add to calendar';a.style.fontSize='.82rem';a.style.textDecoration='none';r.appendChild(a);
+    var x=document.createElement('button');x.className='x';x.textContent='Hatao';x.setAttribute('aria-label','Hatao '+o.e.t);x.onclick=function(){S.ev.splice(o.i,1);save();renderAll()};r.appendChild(x);
+    c.appendChild(r);box.appendChild(c)});
+  var w=S.ev.filter(function(e){return e.k==='wedding'&&left(e.d)>=0}).sort(function(a,b){return a.d<b.d?-1:1})[0];
+  $('wd').textContent=w?left(w.d):'–';
+  var nx=S.ev.filter(function(e){return e.k!=='wedding'&&left(e.d)>=0}).sort(function(a,b){return a.d<b.d?-1:1})[0];
+  $('nd').textContent=nx?left(nx.d):'–';
+  $('nl').textContent=nx?'din bache hain: '+nx.t:'Koi aane wali date nahi, nayi jodo';
+}
+function weekDays(){var t=today(),dow=(t.getDay()+6)%7,m=new Date(t.getFullYear(),t.getMonth(),t.getDate()-dow),a=[];
+  for(var i=0;i<7;i++)a.push(new Date(m.getFullYear(),m.getMonth(),m.getDate()+i));return a}
+function renderStudy(){
+  var days=weekDays(),tot=0,mx=4;
+  days.forEach(function(d){var h=S.log[iso(d)]||0;tot+=h;if(h>mx)mx=h});
+  $('wk').textContent='Is hafte: '+tot+' / 20 ghante';
+  $('wb').style.width=Math.min(100,tot/20*100)+'%';
+  var g=$('wg');g.textContent='';var nm=['Som','Mang','Budh','Guru','Shuk','Shani','Ravi'];
+  days.forEach(function(d,i){var h=S.log[iso(d)]||0,c=document.createElement('div');
+    var s=document.createElement('span');s.style.height=(h/mx*60)+'px';c.appendChild(s);
+    c.appendChild(document.createTextNode(h+'h'));c.appendChild(document.createElement('br'));c.appendChild(document.createTextNode(nm[i]));g.appendChild(c)});
+  var st=0,d=today();if(!S.log[iso(d)])d=new Date(d.getFullYear(),d.getMonth(),d.getDate()-1);
+  while(S.log[iso(d)]>0){st++;d=new Date(d.getFullYear(),d.getMonth(),d.getDate()-1)}
+  $('st').textContent=st?st+' din ki streak':'';
+  var cur=S.log[iso(today())];if(cur)$('hr').value=cur;
+}
+var SUBJ=[
+['General English',['Grammar aur error spotting','Vocabulary (synonyms, antonyms)','Comprehension passages','Sentence improvement']],
+['Indian Culture, Heritage aur Freedom Movements',['Prachin aur madhya kaal','Kala aur sanskriti','1857 aur uske baad ke andolan','Gandhi yug aur swatantrata']],
+['Indian Economy aur Development',['Basic concepts (GDP, inflation)','Budget aur taxation','Banking aur RBI','Planning aur sarkari yojanayein','Poverty, rozgar, vikas ke mudde']],
+['Governance aur Constitution',['Preamble, Fundamental Rights, DPSP','Sansad, Karyapalika, Nyayapalika','Federalism aur Panchayati Raj','Constitutional bodies','Governance ki pahal']],
+['General Science aur Computer',['Physics basics','Chemistry basics','Biology aur health','MS Office aur internet','Cyber security basics']],
+['Maths, Statistics aur Mental Ability',['Arithmetic (%, ratio, time-work)','Data interpretation','Statistics (mean, median, mode)','Reasoning (series, coding, puzzles)']],
+['Industrial Relations, Labour Codes aur Social Security',['Chaar Labour Codes','EPF aur MP Act 1952','ESI, gratuity, maternity benefits','Industrial disputes aur trade unions','Social security schemes']],
+['Accountancy, Auditing aur Insurance',['Journal, ledger, trial balance','Final accounts','Depreciation aur BRS','Auditing basics','Insurance ke principles']],
+['Current Events',['Pichhle 12 mahine ki national khabrein','International events','Awards, sports, appointments','Sarkari yojanayein aur reports']]];
+var openSj={};
+function sj(i){if(!S.sub)S.sub={};if(!S.sub[i])S.sub[i]={d:[],s:0,c:0,w:0};return S.sub[i]}
+function cov(i){var n=SUBJ[i][1].length;return sj(i).d.filter(function(x){return x<n}).length/n}
+function acc(i){var o=sj(i),t=Math.max(o.s,o.c+o.w);return t>0?Math.max(0,(o.c-o.w/3)/t):0}
+function ready(i){return Math.round((cov(i)*0.5+acc(i)*0.5)*100)}
+function lv(p){return p>=70?2:p>=40?1:0}
+var LN=['Shuruaat','Chal rahi hai','Exam ready'];
+function num(lbl,i,k){var w=document.createElement('label');w.textContent=lbl+' ';var n=document.createElement('input');n.type='number';n.min=0;n.value=sj(i)[k]||'';
+  n.onchange=function(){sj(i)[k]=Math.max(0,parseInt(n.value)||0);save();renderTodo()};w.appendChild(n);return w}
+function renderTodo(){
+  var box=$('sj');box.textContent='';var tot=0;
+  SUBJ.forEach(function(x,i){
+    var p=ready(i);tot+=p;
+    var d=document.createElement('details');d.className='sj';d.open=!!openSj[i];d.ontoggle=function(){openSj[i]=d.open};
+    var sm=document.createElement('summary');
+    var b=document.createElement('b');b.textContent=x[0];sm.appendChild(b);
+    var c=document.createElement('span');c.className='pc lv'+lv(p);c.textContent=p+'%';sm.appendChild(c);d.appendChild(sm);
+    var body=document.createElement('div');body.className='sjb';
+    var br=document.createElement('div');br.className='bar';var bi=document.createElement('i');bi.style.width=p+'%';br.appendChild(bi);body.appendChild(br);
+    var st=document.createElement('p');st.className='note';st.textContent='Syllabus: '+Math.round(cov(i)*100)+'%  |  PYQ score: '+Math.round(acc(i)*100)+'%  |  '+LN[lv(p)];body.appendChild(st);
+    x[1].forEach(function(t,j){
+      var r=document.createElement('div');var dn=sj(i).d.indexOf(j)>-1;r.className='todo'+(dn?' d':'');
+      var k=document.createElement('input');k.type='checkbox';k.checked=dn;k.setAttribute('aria-label',t);
+      k.onchange=function(){var a=sj(i).d,q=a.indexOf(j);if(k.checked&&q<0)a.push(j);if(!k.checked&&q>-1)a.splice(q,1);save();renderTodo()};
+      var sp=document.createElement('span');sp.textContent=t;var pb=document.createElement('button');pb.className='mini';pb.textContent='Padhao';pb.setAttribute('aria-label','Padhao: '+t);pb.onclick=function(){openChat(x[0]+': '+t,'')};r.appendChild(k);r.appendChild(sp);r.appendChild(pb);body.appendChild(r)});
+    var py=document.createElement('div');py.className='pyq';
+    var tt=document.createElement('b');tt.textContent='PYQ:';py.appendChild(tt);
+    py.appendChild(num('Solved',i,'s'));py.appendChild(num('Sahi',i,'c'));py.appendChild(num('Galat',i,'w'));
+    body.appendChild(py);d.appendChild(body);box.appendChild(d)});
+  var o=Math.round(tot/SUBJ.length);
+  $('ov').textContent='Overall readiness: '+o+'%';$('ob').style.width=o+'%';
+  var ol=$('ol');ol.textContent=LN[lv(o)];ol.className='chip lv'+lv(o);
+  var tl=$('tl');tl.textContent='';
+  if(!S.tests||!S.tests.length){var e=document.createElement('p');e.className='note';e.textContent='Abhi koi paper log nahi hai. Pehla PYQ ya mock solve karke yahan jodo.';tl.appendChild(e)}
+  else{var sc=S.tests.map(function(t){return Math.max(0,(t.r-t.w/3)/t.q*100)});
+    var l3=sc.slice(-3),av=Math.round(l3.reduce(function(a,b){return a+b},0)/l3.length);
+    var sum=document.createElement('p');sum.innerHTML='';sum.style.fontWeight='700';sum.textContent='Pichhle '+l3.length+' papers ka average: '+av+'%';tl.appendChild(sum);
+    S.tests.forEach(function(t,i){var r=document.createElement('div');r.className='todo';
+      var sp=document.createElement('span');sp.textContent=t.n+': '+t.r+' sahi, '+t.w+' galat, '+t.q+' mein se, score '+Math.round(sc[i])+'%';
+      var x=document.createElement('button');x.className='x';x.textContent='Hatao';x.setAttribute('aria-label','Hatao '+t.n);x.onclick=function(){S.tests.splice(i,1);save();renderTodo()};
+      r.appendChild(sp);r.appendChild(x);tl.appendChild(r)})}
+}
+var PLAN=[
+['Labour Codes aur EPF Act 1952','Ye subject sabse naya hota hai aur exam ke liye khaas hai, isliye pehle.'],
+['Industrial relations, ESI, gratuity, social security','Schemes ke naam, limits aur eligibility ek note mein likho.'],
+['Accountancy basics','Journal se final accounts tak. Roz 10 sawal practice karo.'],
+['Accountancy, Auditing aur Insurance','Depreciation, BRS aur insurance ke principles.'],
+['Governance aur Constitution','Articles aur bodies ki chhoti list banao.'],
+['Indian Economy','Budget, banking, RBI aur sarkari yojanayein.'],
+['Culture, Heritage aur Freedom Movements','Timeline banake padho.'],
+['Maths, Statistics, Reasoning aur English','Roz thoda practice, speed par dhyan.'],
+['General Science, Computer aur Current Events','Pichhle 12 mahine ki khabrein ek jagah.'],
+['Revision aur PYQ','Kamzor subjects ke PYQ solve karo. Readiness % dekho.'],
+['Sirf mocks aur halka revision','2 ghante ka full mock do aur negative marking ki practice karo.']];
+function renderPlan(){
+  var b=$('pl');b.textContent='';var t=today(),s0=new Date(2026,9,5),f=function(d){return d.toLocaleDateString('en-IN',{day:'numeric',month:'short'})};
+  PLAN.forEach(function(w,i){
+    var a=new Date(s0.getFullYear(),s0.getMonth(),s0.getDate()+i*7),e=new Date(a.getFullYear(),a.getMonth(),a.getDate()+6);
+    var now=t>=a&&t<=e,r=document.createElement('div');r.className='wk'+(now?' now':'');
+    var n=document.createElement('div');n.className='n';n.textContent='Hafta '+(i+1)+(now?' (abhi)':'');n.appendChild(document.createElement('br'));n.appendChild(document.createTextNode(f(a)+' - '+f(e)));
+    var c=document.createElement('div');var h=document.createElement('b');h.textContent=w[0];c.appendChild(h);
+    var d=document.createElement('span');d.className='note';d.textContent=w[1];c.appendChild(d);c.appendChild(document.createElement('br'));var cb=document.createElement('button');cb.className='mini';cb.textContent='Is topic par tayari karo';cb.onclick=function(){openChat(w[0],w[1])};c.appendChild(cb);
+    r.appendChild(n);r.appendChild(c);b.appendChild(r)});
+}
+function renderAll(){renderPlan();renderEv();renderStudy();renderTodo()}
+$('ea').onclick=function(){var t=$('et').value.trim(),d=$('ed').value;if(!t||!d){$('et').focus();return}
+  S.ev.push({t:t,d:d,k:$('ek').value});$('et').value='';save();renderEv()};
+$('hl').onclick=function(){var v=parseFloat($('hr').value);if(isNaN(v)||v<0)return;S.log[iso(today())]=v;save();renderStudy()};
+$('ta').onclick=function(){var n=$('tn').value.trim(),q=parseInt($('tq').value),r=parseInt($('tr').value)||0,w=parseInt($('tw').value)||0;
+  if(!n||!q||r+w>q){$('tn').focus();return}
+  if(!S.tests)S.tests=[];S.tests.push({n:n,q:q,r:r,w:w});['tn','tq','tr','tw'].forEach(function(i){$(i).value=''});save();renderTodo()};
+var H=[],topic='',samp=null,cBusy=false;
+var TUTOR=function(t){return 'Tum Gauri ke personal tutor ho. Wo UPSC EPFO APFC recruitment test (20 Dec 2026) ki tayari kar rahi hai: 2 ghante ka objective MCQ paper, Hindi aur English mein, galat jawab par 1/3 negative marking. Simple Hinglish (Roman script) mein jawab do. Plain text likho, markdown ya ** # jaise symbols mat use karo; chhoti list ke liye 1. ya - chalega. Abhi ka topic: '+t+'. Jawab chhote aur exam ke nazariye se rakho. Jab wo practice maange, ek samay par ek MCQ do (4 options), uska jawab aane ke baad sahi option aur chhota explanation batao. Agar koi tathya, dhara, limit ya date tumhe pakki na ho, to saaf bolo ki official source (upsc.gov.in, epfindia.gov.in, labour ministry) se check kare, kyunki ye badalte rehte hain.'};
+async function getSamp(){
+  if(samp!==null)return samp;
+  try{samp=(await claude.use('sample'))||false}catch(e){samp=false}
+  return samp;
+}
+function bub(cls,t){var m=document.createElement('div');m.className='m '+cls;m.textContent=t;$('cl').appendChild(m);$('cl').scrollTop=1e6;return m}
+function openChat(t,hint){
+  topic=t;H=[];$('cl').textContent='';$('ct').textContent=t;$('chat').hidden=false;
+  bub('b','Topic: '+t+(hint?'\n'+hint:'')+'\nNeeche se chuno ya apna sawal likho.');
+  var q=$('cq');q.textContent='';
+  [['Samjhao','Is topic ko simple Hinglish mein samjhao aur exam ke liye zaroori baatein batao.'],['Important points','Is topic ke sabse important exam points ki chhoti list do.'],['MCQ practice','Mujhe is topic par ek MCQ do. Ek-ek karke poochho.'],['Revision notes','Is topic ke 1 page ke revision notes do jo aakhri din padh sakoon.']].forEach(function(a){
+    var b=document.createElement('button');b.textContent=a[0];b.onclick=function(){send(a[1])};q.appendChild(b)});
+  $('ci').focus();
+}
+async function send(text){
+  text=(text||'').trim();if(!text||cBusy)return;
+  if(H.length>=20){bub('b','Chat lambi ho gayi. Topic ke saath naya chat kholo.');return}
+  $('ci').value='';bub('u',text);H.push({role:'user',content:text});
+  cBusy=true;var m=bub('b','Soch rahi hoon...');
+  try{
+    var sp=await getSamp(),out='';
+    if(sp){
+      var msgs=H.map(function(x,i){return i===0?{role:'user',content:TUTOR(topic)+'\n\nGauri ka pehla sawal: '+x.content}:x});
+      var r=await sp(msgs,{cache:false,onText:function(o){m.textContent=o.text}});out=r.text;
+    }else{
+      var res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({topic:topic,messages:H})});
+      if(!res.ok)throw new Error('http');out=(await res.json()).text;
+    }
+    m.textContent=out;H.push({role:'assistant',content:out});
+  }catch(e){
+    H.pop();
+    m.textContent=(e&&e.code==='not_granted')?'Chat chalane ke liye permission chahiye. Dobara try karo aur "allow" dabao.':(e&&e.code==='rate_limited')?'Thoda ruk kar dobara try karo.':'Chat abhi available nahi hai. Thodi der baad dobara try karo.';
+  }
+  cBusy=false;
+}
+$('cs').onclick=function(){send($('ci').value)};
+$('ci').onkeydown=function(e){if(e.key==='Enter')send($('ci').value)};
+$('cx').onclick=function(){$('chat').hidden=true};
+var h=new Date().getHours();
+$('hi').textContent=(h<12?'Suprabhat':h<18?'Namaste':'Shubh sandhya')+', Gauri. Nana ka sapna, ek ek din mein.';
+renderAll();
+initSync();
+</script>
+</body>
+</html>
